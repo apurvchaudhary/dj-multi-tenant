@@ -1,0 +1,35 @@
+{% extends 'admin/base.html' %}
+{% block title %}Admin{% endblock %}
+{% block branding %}
+    <h1 id="site-name">
+        <a title="Services">Organization Manager</a>
+    </h1>
+<a class="button" href="{% url 'org_list' %}">Organization</a>
+<a class="button" href="{% url 'admin:index' %}">Admin</a>
+{% endblock %}
+
+{% block breadcrumbs %}
+    <!-- This block is intentionally left empty to remove breadcrumbs -->
+{% endblock %}
+
+{% block footer %}
+    <div id="footer" align="center">
+        <p>State Manager by Apurv Chaudhary</p>
+    </div>
+{% endblock %}
+
+{% block extrahead %}
+{% load static %}
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="{% static 'templates/app_css.css' %}" rel="stylesheet">
+    <style>
+        /* Reset Bootstrap styles for admin buttons */
+        .submit-row *, .cancel-link {
+            all: revert;
+        }
+    </style>
+{% endblock %}
+
+{% block extrajs %}
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+{% endblock %}

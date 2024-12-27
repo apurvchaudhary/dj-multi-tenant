@@ -1,0 +1,124 @@
+{% extends 'admin/base_site.html' %}
+{% block content %}
+<head>
+    <meta charset="UTF-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <title>Admin Signup</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f6f9;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .signup-container {
+            background: #ffffff;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 400px;
+        }
+
+        .signup-container h2 {
+            margin: 0 0 20px;
+            font-size: 24px;
+            color: #333333;
+            text-align: center;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 5px;
+            color: #555555;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #cccccc;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+
+        .form-group input:focus {
+            border-color: #4CAF50;
+            outline: none;
+        }
+
+        .signup-btn {
+            background-color: #79aec8;
+            color: #ffffff;
+            border: none;
+            padding: 10px 15px;
+            font-size: 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            width: 100%;
+        }
+
+        .signup-btn:hover {
+            background-color: #417893;
+        }
+
+        .form-footer {
+            margin-top: 15px;
+            text-align: center;
+        }
+
+        .form-footer a {
+            color: #79aec8;
+            text-decoration: none;
+        }
+
+        .form-footer a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+<h1>
+    Sign up
+</h1>
+<div class="signup-container">
+    {% if form.errors %}
+    {% for field, error in form.errors.items %}
+    {{ error }}
+    {% endfor %}
+    {% endif %}
+    <form method="POST">
+        {% csrf_token %}
+        <div class="form-group">
+            <label for="username">Username</label>
+            <input id="username" name="username" required type="text">
+        </div>
+        <div class="form-group">
+            <label for="email">Email</label>
+            <input id="email" name="email" required type="email">
+        </div>
+        <div class="form-group">
+            <label for="password1">Password</label>
+            <input id="password1" name="password1" required type="password">
+        </div>
+        <div class="form-group">
+            <label for="password2">Confirm Password</label>
+            <input id="password2" name="password2" required type="password">
+        </div>
+        <button class="signup-btn" type="submit">Sign Up</button>
+    </form>
+    <div class="form-footer">
+        <p>Already have an account? <a href="/admin/login/">Log in</a></p>
+    </div>
+</div>
+</body>
+{% endblock %}

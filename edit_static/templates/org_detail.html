@@ -1,0 +1,69 @@
+{% extends 'admin/base_site.html' %}
+{% block content %}
+{% load static %}
+<div class="column card">
+   <h4>{{ organization.name }}</h4>
+   <p>{{ organization.description }}</p>
+   <div class="{% if service.status == 'Operational' %}green{% elif service.status == 'Degraded Performance' %}yellow{% elif service.status == 'Partial Outage' %}orange{% else %}red{% endif %}"
+      data-id="{{ service.id }}">
+      <p>{{ organization.status }}</p>
+   </div>
+    Last updated at {{ organization.updated_at }}
+               <div class="mt-3">
+                <a class="button" href="{% url 'org_detail' organization.id %}">Redirect</a>
+            </div>
+</div>
+<h3 id="header">OnBoarding/DeBoarding updates</h3>
+    <div style="max-height: 80vh; overflow: auto;">
+        <table style="text-align: left; width: 100%">
+            <thead>
+            <tr>
+                <th style="width: 35%; border-bottom: 1px solid #ccc;">Datetime</th>
+                <th style="width: 45%; border-bottom: 1px solid #ccc;">Remark</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for update in updates %}
+            <tr>
+                <td style="border-bottom: 1px solid #ccc;">{{ update.created_at }}</td>
+                <td style="border-bottom: 1px solid #ccc;">{{ update.update_text }}</td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="3" style="text-align: center; border-bottom: 1px solid #ccc;">No updates available.</td>
+            </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+<script>
+   if (Notification.permission !== "granted") {
+       Notification.requestPermission().then(function(permission) {
+           if (permission === "granted") {
+               console.log("Notification permission granted.");
+           }
+       });
+   }
+
+   const serviceId = "{{ service.id }}";
+
+   const socket = new WebSocket('ws://' + window.location.host + '/ws/updates/');
+
+   socket.onmessage = function(e) {
+
+       const data = JSON.parse(e.data);
+       const message = data['update']['message'];
+       const serviceIdFromMessage = data['update']['service_id'];
+
+       if (serviceId && serviceIdFromMessage == serviceId) {
+           if (Notification.permission === "granted") {
+               new Notification("New update!", {
+                   body: message,
+                   icon: '{% static "images/favicon.png" %}',
+               });
+           }
+           window.location.reload();
+       }
+   };
+</script>
+{% endblock %}
