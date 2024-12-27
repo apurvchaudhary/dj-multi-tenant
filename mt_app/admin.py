@@ -11,7 +11,7 @@ admin.site.site_url = "/"
 
 
 class OrganizationAdmin(admin.ModelAdmin):
-    exclude = ('object_id', 'deleted_at', 'deleted_by', 'owner', 'deleted')
+    exclude = ("object_id", "deleted_at", "deleted_by", "owner", "deleted")
 
     def get_form(self, request, obj=None, **kwargs):
         form = super().get_form(request, obj, **kwargs)
@@ -20,16 +20,14 @@ class OrganizationAdmin(admin.ModelAdmin):
             form.base_fields["subdomain"].help_text = "subdomain can not be updated"
         return form
 
+    def get_actions(self, request):
+        return {}
 
     def get_queryset(self, request):
         if request.user.is_superuser:
             return super().get_queryset(request)
         else:
             return Organization.objects.filter(deleted=False)
-
-    def delete_queryset(self, request, queryset):
-        for obj in queryset:
-            self.delete_model(request, obj)
 
     def delete_model(self, request, obj):
         obj.deleted = True
@@ -47,6 +45,7 @@ class OrganizationAdmin(admin.ModelAdmin):
             messages.error(request, f"Organization '{obj.name}' deletion task already in progress")
             return self.change_view(request, object_id, extra_context)
         return super().delete_view(request, object_id, extra_context)
+
 
 admin.site.register(CustomUser)
 admin.site.register(Organization, OrganizationAdmin)

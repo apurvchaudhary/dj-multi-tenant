@@ -10,9 +10,7 @@ def admin_signup(request):
         form = AdminSignupForm(request.POST)
         if form.is_valid():
             form.save()
-            messages.success(
-                request, "Account created successfully!, Kindly ask admin to give you login access"
-            )
+            messages.success(request, "Account created successfully!, Kindly ask admin to give you login access")
             return redirect("/admin/")
     else:
         form = AdminSignupForm()
