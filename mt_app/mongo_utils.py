@@ -14,6 +14,7 @@ class OrganizationMongoManager:
             "status": "pending",
             "db": "pending",
             "pod": "pending",
+            "service": "pending",
             "load_balancer": "pending",
         }
         result = self.collection.insert_one(document)

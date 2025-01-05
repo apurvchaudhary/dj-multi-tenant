@@ -2,17 +2,15 @@
 {% block title %}Organizations{% endblock %}
 {% block content %}
 {% load static %}
-<head>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
-</head>
 <h1 id="header" style="border-radius: 10px;">Your Organizations</h1>
 <div class="row">
     {% for org in organizations %}
     <div class="column">
         <div class="card">
             <div class="card-header">
-            <h4>Name : {{ org.name }}</h4>
+                <h4>{{ org.name }}</h4>
             </div>
+            <p class="p-v-small">created by {{org.owner.username}}</p>
             <p>{{ org.description }}</p>
             <div class="mt-3">
                 <a class="button" href="{% url 'org_detail' org.id %}">View</a>
@@ -40,9 +38,9 @@
 
         const data = JSON.parse(e.data);
         const message = data.update.message || null
-        const serviceIdFromMessage = data.update.service_id || null;
+        const orgIdInMessage = data.update.org_id || null;
 
-        if (serviceIdFromMessage) {
+        if (orgIdInMessage) {
             if (Notification.permission === "granted") {
                 new Notification("New update!", {
                     body: message,

@@ -3,6 +3,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 
 from mt_app.forms import AdminSignupForm
 from mt_app.models import Organization
+from mt_app.mongo_utils import OrganizationMongoManager
 
 
 def admin_signup(request):
@@ -23,10 +24,9 @@ def org_list(request):
 
 def org_detail(request, pk):
     org = get_object_or_404(Organization, pk=pk)
+    detail = OrganizationMongoManager().get_organization(org.object_id)
     return render(
         request,
         "org_detail.html",
-        {
-            "organization": org,
-        },
+        {"organization": org, "detail": detail},
     )

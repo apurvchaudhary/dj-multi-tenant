@@ -63,3 +63,8 @@
     text-align: center;
     height: 25px;
     }
+
+.p-v-small {
+    font-size: 12px;
+    text-align: right;
+}
